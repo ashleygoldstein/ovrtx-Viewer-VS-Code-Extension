@@ -1,0 +1,15 @@
+**/*
+!package.json
+!README.md
+!THIRD_PARTY_NOTICES.md
+!extension.js
+!session.js
+!panel.css
+!runtime/camera.py
+!runtime/launch.py
+!runtime/prepare.py
+!runtime/renderer.py
+!runtime/server.py
+!runtime/web/index.html
+!runtime/web/viewer.js
+!runtime/web/viewer.css

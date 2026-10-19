@@ -1,0 +1,17 @@
+*.vsix
+qa/
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.log
+.env
+.env.*
+!.env.example
+.vscode/settings.json
+*.dll
+*.so
+*.pyd
+*.whl
+*.exe

@@ -1,0 +1,98 @@
+{
+  "name": "ovrtx-viewer",
+  "displayName": "OVRTX Viewer",
+  "description": "Open a USD scene in an interactive NVIDIA OVRTX viewer.",
+  "version": "0.2.0",
+  "publisher": "ashleygoldstein",
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Visualization"
+  ],
+  "extensionKind": [
+    "workspace"
+  ],
+  "main": "./extension.js",
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false
+    },
+    "virtualWorkspaces": false
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "ovrtxViewer.open",
+        "title": "OVRTX Viewer: Open USD Scene",
+        "icon": "$(preview)"
+      },
+      {
+        "command": "ovrtxViewer.stop",
+        "title": "OVRTX Viewer: Stop Viewer"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "ovrtxViewer.open",
+          "when": "resourceExtname =~ /\\.(usd|usda|usdc)$/i",
+          "group": "navigation"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "ovrtxViewer.open",
+          "when": "resourceExtname =~ /\\.(usd|usda|usdc)$/i",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "OVRTX Viewer",
+      "properties": {
+        "ovrtxViewer.pythonPath": {
+          "type": "string",
+          "default": "",
+          "scope": "resource",
+          "description": "Python executable with pxr (OpenUSD) for scene preparation. Empty discovers a workspace .venv, then uses the renderer Python."
+        },
+        "ovrtxViewer.runtimePythonPath": {
+          "type": "string",
+          "default": "",
+          "scope": "resource",
+          "description": "Python executable with ovrtx, ovstage, numpy and Pillow. Empty discovers .venv in the workspace."
+        },
+        "ovrtxViewer.gpu": {
+          "type": "integer",
+          "default": 0,
+          "minimum": 0,
+          "scope": "resource",
+          "description": "CUDA GPU index for rendering."
+        },
+        "ovrtxViewer.port": {
+          "type": "integer",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 65535,
+          "scope": "resource",
+          "description": "0 automatically chooses a free private port. A value from 1024 to 65535 is preferred when available, with automatic fallback when busy. VS Code handles SSH forwarding."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "package": "npx --yes @vscode/vsce package --no-dependencies --out ovrtx-viewer-0.2.0.vsix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ashleygoldstein/ovrtx-Viewer-VS-Code-Extension.git"
+  },
+  "homepage": "https://github.com/ashleygoldstein/ovrtx-Viewer-VS-Code-Extension#readme",
+  "bugs": {
+    "url": "https://github.com/ashleygoldstein/ovrtx-Viewer-VS-Code-Extension/issues"
+  }
+}
