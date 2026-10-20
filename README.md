@@ -4,6 +4,46 @@ Open a USD scene in a VS Code or Cursor tab and inspect it with NVIDIA RTX rende
 Orbit, pan, zoom, and switch between perspective, top, and front views. The viewer
 loads `.usd`, `.usda`, and `.usdc` files without saving changes to the source scene.
 
+## How it works
+
+The VS Code extension prepares a read-only USD overlay, starts the OVRTX renderer
+on the GPU host, and embeds its loopback HTTP viewer through VS Code port
+forwarding. The browser controls the camera but does not receive scene geometry:
+each interaction requests a server-rendered JPEG.
+
+```mermaid
+flowchart LR
+    A["VS Code extension<br/>extension.js"] --> B["Runtime launcher<br/>launch.py"]
+    B --> C["USD preparation<br/>prepare.py"]
+    C --> D["Session files<br/>viewer.usda + scene.json"]
+    B --> E["Loopback HTTP server<br/>server.py"]
+    D --> E
+    E --> F["OVRTX GPU renderer<br/>renderer.py"]
+    A --> G["Startup bridge<br/>session.js"]
+    G --> H["VS Code webview"]
+    H --> I["Browser controls<br/>viewer.js"]
+    I -->|"GET /scene and /frame"| E
+    E -->|"JPEG frame"| I
+```
+
+For a detailed interactive version, see
+[`docs/ovrtx-viewer-architecture.canvas.tsx`](docs/ovrtx-viewer-architecture.canvas.tsx).
+It includes selectable system, startup, and frame-request graphs with links to the
+relevant source files.
+
+### Load the interactive architecture Canvas
+
+Cursor compiles Canvas files only from its managed `canvases` directory for the
+current workspace; the file in `docs/` is the repository copy. To load it:
+
+1. Clone this repository and open its root folder in Cursor.
+2. Open Agent chat and enter:
+   `Copy docs/ovrtx-viewer-architecture.canvas.tsx into this workspace's managed canvases directory, then give me a link to open it.`
+3. Open the Canvas from the link returned by Agent. It appears beside the chat.
+
+The interactive Canvas is a Cursor feature. Other Markdown viewers can use the
+Mermaid graph above, and the tracked `.canvas.tsx` file remains readable source.
+
 ## Requirements
 
 - VS Code 1.85 or newer, or a compatible version of Cursor.
